@@ -1,0 +1,282 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>dynamic table</title>
+  <style type="text/css">
+  .tableContainer {
+    margin-bottom: 10px;
+    position: relative;
+    height: 200px;
+    border: 1px solid black;
+    padding-top: 20px;
+  }
+  
+  .tableContainerInner {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+  }
+  
+  .hederLine {
+    position: absolute;
+    height: 20px;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: lightgrey;
+    border-bottom: 1px solid black;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  tr {
+    height: 20px;
+  }
+  
+  thead tr,
+  thead th {
+    border: 0;
+    height: 0;
+    padding: 0;
+  }
+  
+  th {
+    text-align: left;
+  }
+  
+  tbody td {
+    border: 1px solid black;
+  }
+  
+  .headerFix {
+    position: absolute;
+    top: 0;
+    height: 20px;
+    border-left: 1px solid black;
+    padding-left: 5px;
+  }
+  
+  .first {
+    border-left: none;
+  }
+  
+  .colorLine {
+    background-color: yellow;
+  }
+  </style>
+</head>
+
+<body>
+  <div class="tableContainer">
+    <div class="hederLine"></div>
+    <div class="tableContainerInner">
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <div class="headerFix first">Name</div>
+            </th>
+            <th>
+              <div class="headerFix">ID</div>
+            </th>
+            <th>
+              <div class="headerFix">Age</div>
+            </th>
+            <th>
+              <div class="headerFix">Sex</div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>FIRST</td>
+            <td>1</td>
+            <td>22</td>
+            <td>Female</td>
+          </tr>
+          <tr>
+            <td>AAA</td>
+            <td>2</td>
+            <td>22</td>
+            <td>Female</td>
+          </tr>
+          <tr>
+            <td>AAA</td>
+            <td>3</td>
+            <td>22</td>
+            <td>Female</td>
+          </tr>
+          <tr>
+            <td>AAA</td>
+            <td>4</td>
+            <td>22</td>
+            <td>Female</td>
+          </tr>
+          <tr>
+            <td>AAA</td>
+            <td>5</td>
+            <td>22</td>
+            <td>Female</td>
+          </tr>
+          <tr>
+            <td>AAA</td>
+            <td>6</td>
+            <td>22</td>
+            <td>Female</td>
+          </tr>
+          <tr>
+            <td>AAA</td>
+            <td>7</td>
+            <td>22</td>
+            <td>Female</td>
+          </tr>
+          <tr>
+            <td>AAA</td>
+            <td>8</td>
+            <td>22</td>
+            <td>Female</td>
+          </tr>
+          <tr>
+            <td>AAA</td>
+            <td>9</td>
+            <td>22</td>
+            <td>Female</td>
+          </tr>
+          <tr>
+            <td>AAA</td>
+            <td>10</td>
+            <td>22</td>
+            <td>Female</td>
+          </tr>
+          <tr>
+            <td>AAA</td>
+            <td>11</td>
+            <td>22</td>
+            <td>Female</td>
+          </tr>
+          <tr>
+            <td>AAA</td>
+            <td>4</td>
+            <td>22</td>
+            <td>Female</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <span>Name</span>
+  <input type="text" id="formName">
+  <span>ID</span>
+  <input type="text" id="formId">
+  <span>Age</span>
+  <input type="text" id="formAge">
+  <span>Sex</span>
+  <select id="formSex">
+    <option value="">Plese, select</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+  </select>
+  <br>
+  <button id="formAdd">Add</button>
+</body>
+<script type="text/javascript">
+var tBody = document.getElementsByTagName("tbody")[0];
+var formName = document.getElementById("formName");
+var formId = document.getElementById("formId");
+var formAge = document.getElementById("formAge");
+var formSex = document.getElementById("formSex");
+var formAdd = document.getElementById("formAdd");
+
+function colorTable(container, sClass, s, n) {
+  if (!container || !sClass) {
+    return new Error('wrong args');
+  }
+  var start = s || 0;
+  var step = n || 2;
+  var rows = container.children;
+  var patt = new RegExp("(^|\\s)" + sClass + "(\\s|$)");
+
+  for (var i = start, l = rows.length; i < l; i += step) {
+    if (!patt.test(rows[i].className)) {
+      rows[i].className += sClass;
+    }
+  }
+}
+
+function addListener(obj, listener, callback) {
+  if (obj.addEventListener) {
+    obj.addEventListener(listener, callback, false);
+  }
+  if (obj.attachEvent) {
+    obj.attachEvent('on' + listener, callback);
+  }
+
+}
+
+function onLoad(callback) {
+  if (document.addEventListener) {
+    document.addEventListener("DOMContentLoaded", function() {
+      document.removeEventListener("DOMContentLoaded", callback, false);
+      callback();
+    }, false);
+  } else if (document.attachEvent) {
+    document.attachEvent("onreadystatechange", function() {
+      if (document.readyState === "complete") {
+        document.detachEvent("onreadystatechange", callback);
+        callback();
+      }
+    });
+  }
+}
+
+function getFormsData() {
+  return {
+    name: formName.value,
+    id: formId.value,
+    age: formAge.value,
+    sex: formSex.value
+  };
+}
+
+function checkForm(inputs) {
+  for (var val in inputs) {
+    if (inputs[val] === "") {
+      alert("Plese fill " + val);
+      return false;
+    }
+  }
+  return true;
+}
+
+function appendLine(table, data) {
+  var row = document.createElement("tr"),
+    value,
+    ceil;
+  for (value in data) {
+    ceil = document.createElement("td");
+    ceil.appendChild(document.createTextNode(data[value]));
+    row.appendChild(ceil);
+  }
+  table.appendChild(row);
+}
+
+onLoad(function() {
+  colorTable(tBody, 'colorLine', 1, 2);
+});
+
+addListener(formAdd, 'click', function() {
+  var inputs = getFormsData();
+  if (checkForm(inputs)) {
+    appendLine(tBody, inputs);
+    colorTable(tBody, 'colorLine', 1, 2);
+  }
+});
+
+
+</script>
+
+</html>
