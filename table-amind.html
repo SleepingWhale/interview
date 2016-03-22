@@ -184,99 +184,99 @@
   <button id="formAdd">Add</button>
 </body>
 <script type="text/javascript">
-var tBody = document.getElementsByTagName("tbody")[0];
-var formName = document.getElementById("formName");
-var formId = document.getElementById("formId");
-var formAge = document.getElementById("formAge");
-var formSex = document.getElementById("formSex");
-var formAdd = document.getElementById("formAdd");
+(function() {
+  var tBody = document.getElementsByTagName("tbody")[0];
+  var formName = document.getElementById("formName");
+  var formId = document.getElementById("formId");
+  var formAge = document.getElementById("formAge");
+  var formSex = document.getElementById("formSex");
+  var formAdd = document.getElementById("formAdd");
 
-function colorTable(container, sClass, s, n) {
-  if (!container || !sClass) {
-    return new Error('wrong args');
-  }
-  var start = s || 0;
-  var step = n || 2;
-  var rows = container.children;
-  var patt = new RegExp("(^|\\s)" + sClass + "(\\s|$)");
-
-  for (var i = start, l = rows.length; i < l; i += step) {
-    if (!patt.test(rows[i].className)) {
-      rows[i].className += sClass;
+  function colorTable(container, sClass, s, n) {
+    if (!container || !sClass) {
+      return new Error('wrong args');
     }
-  }
-}
+    var start = s || 0;
+    var step = n || 2;
+    var rows = container.children;
+    var patt = new RegExp("(^|\\s)" + sClass + "(\\s|$)");
 
-function addListener(obj, listener, callback) {
-  if (obj.addEventListener) {
-    obj.addEventListener(listener, callback, false);
-  }
-  if (obj.attachEvent) {
-    obj.attachEvent('on' + listener, callback);
-  }
-
-}
-
-function onLoad(callback) {
-  if (document.addEventListener) {
-    document.addEventListener("DOMContentLoaded", function() {
-      document.removeEventListener("DOMContentLoaded", callback, false);
-      callback();
-    }, false);
-  } else if (document.attachEvent) {
-    document.attachEvent("onreadystatechange", function() {
-      if (document.readyState === "complete") {
-        document.detachEvent("onreadystatechange", callback);
-        callback();
+    for (var i = start, l = rows.length; i < l; i += step) {
+      if (!patt.test(rows[i].className)) {
+        rows[i].className += sClass;
       }
-    });
-  }
-}
-
-function getFormsData() {
-  return {
-    name: formName.value,
-    id: formId.value,
-    age: formAge.value,
-    sex: formSex.value
-  };
-}
-
-function checkForm(inputs) {
-  for (var val in inputs) {
-    if (inputs[val] === "") {
-      alert("Plese fill " + val);
-      return false;
     }
   }
-  return true;
-}
 
-function appendLine(table, data) {
-  var row = document.createElement("tr"),
-    value,
-    ceil;
-  for (value in data) {
-    ceil = document.createElement("td");
-    ceil.appendChild(document.createTextNode(data[value]));
-    row.appendChild(ceil);
+  function addListener(obj, listener, callback) {
+    if (obj.addEventListener) {
+      obj.addEventListener(listener, callback, false);
+    }
+    if (obj.attachEvent) {
+      obj.attachEvent('on' + listener, callback);
+    }
+
   }
-  table.appendChild(row);
-}
 
-onLoad(function() {
-  colorTable(tBody, 'colorLine', 1, 2);
-});
+  function onLoad(callback) {
+    if (document.addEventListener) {
+      document.addEventListener("DOMContentLoaded", function() {
+        document.removeEventListener("DOMContentLoaded", callback, false);
+        callback();
+      }, false);
+    } else if (document.attachEvent) {
+      document.attachEvent("onreadystatechange", function() {
+        if (document.readyState === "complete") {
+          document.detachEvent("onreadystatechange", callback);
+          callback();
+        }
+      });
+    }
+  }
 
-addListener(formAdd, 'click', function() {
-  var inputs = getFormsData();
-  if (checkForm(inputs)) {
-    appendLine(tBody, inputs);
+  function getFormsData() {
+    return {
+      name: formName.value,
+      id: formId.value,
+      age: formAge.value,
+      sex: formSex.value
+    };
+  }
+
+  function checkForm(inputs) {
+    for (var val in inputs) {
+      if (inputs[val] === "") {
+        alert("Plese fill " + val);
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function appendLine(table, data) {
+    var row = document.createElement("tr"),
+      value,
+      ceil;
+    for (value in data) {
+      ceil = document.createElement("td");
+      ceil.appendChild(document.createTextNode(data[value]));
+      row.appendChild(ceil);
+    }
+    table.appendChild(row);
+  }
+
+  onLoad(function() {
     colorTable(tBody, 'colorLine', 1, 2);
-  }
-});
+  });
 
-
+  addListener(formAdd, 'click', function() {
+    var inputs = getFormsData();
+    if (checkForm(inputs)) {
+      appendLine(tBody, inputs);
+      colorTable(tBody, 'colorLine', 1, 2);
+    }
+  });
+})();
 </script>
 
 </html>
